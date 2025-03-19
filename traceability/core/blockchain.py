@@ -7,7 +7,7 @@ web3 = Web3(Web3.HTTPProvider(ganache_url))
 if not web3.is_connected():
     raise Exception("Falha ao conectar ao Ganache")
 
-contract_address = "0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8"
+contract_address = " "
 
 contract_abi = [
     {
@@ -148,8 +148,8 @@ contract_abi = [
 
 contract = web3.eth.contract(address=contract_address, abi=contract_abi)
 
-private_key = "0x51b920ed4d3b98b7c5b542bffef803764d631e4894ac2c003e6a361f558ac9d5"
-account_address = "0x8b99A750288478677C52Aef7e9DC69D1A7b713ea"
+private_key = " "
+account_address = " "
 
 def registrar_lote_na_blockchain(numero_lote, data_producao_abate, granja_origem, empresa_produtora):
 
