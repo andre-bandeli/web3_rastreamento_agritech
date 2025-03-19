@@ -1,5 +1,9 @@
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
+
+from .blockchain import registrar_lote_na_blockchain
+
 
 class LoteFrango(models.Model):
     """
@@ -46,3 +50,19 @@ class LoteFrango(models.Model):
         verbose_name = "Lote de Frango"
         verbose_name_plural = "Lotes de Frango"
         ordering = ['-data_producao_abate']
+    
+    def get_absolute_url(self):
+        return reverse('lote-detail', args=[str(self.pk)])
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        try:
+            registrar_lote_na_blockchain(
+                self.numero_lote,
+                self.data_producao_abate,
+                self.granja_origem,
+                self.empresa_produtora
+            )
+        except Exception as e:
+            print(f"Erro ao registrar lote na blockchain: {str(e)}")

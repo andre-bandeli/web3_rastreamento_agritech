@@ -1,5 +1,7 @@
 from django.contrib import admin
 from .models import LoteFrango
+from .blockchain import registrar_lote_na_blockchain
+
 
 @admin.register(LoteFrango)
 class LoteFrangoAdmin(admin.ModelAdmin):
@@ -26,3 +28,15 @@ class LoteFrangoAdmin(admin.ModelAdmin):
             'fields': ('tipo_racao', 'abatedouro', 'certificacoes', 'contato_duvidas')
         }),
     )
+    def save_model(self, request, obj, form, change):
+            super().save_model(request, obj, form, change)
+
+            try:
+                registrar_lote_na_blockchain(
+                    obj.numero_lote,
+                    obj.data_producao_abate,
+                    obj.granja_origem,
+                    obj.empresa_produtora
+                )
+            except Exception as e:
+                self.message_user(request, f"Erro ao registrar lote na blockchain: {str(e)}", level='error')
