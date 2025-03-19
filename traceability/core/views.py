@@ -15,7 +15,7 @@ class LoteFrangoListView(ListView):
 
 class LoteFrangoDetailView(DetailView):
     model = LoteFrango
-    template_name = 'core/templates/lotefrango_detail.html'
+    template_name = 'core/lotefrango_detail.html'
     context_object_name = 'lote'
 
 class LoteFrangoCreateView(CreateView):

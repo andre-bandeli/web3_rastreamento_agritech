@@ -1,11 +1,204 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{{ lote.numero_lote }} - Detalhes Completo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    
+<body class="bg-light">
+    <div class="container mt-5 mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h1 class="display-4">Lote #{{ lote.numero_lote }}</h1>
+                <p class="lead text-muted">Registro completo de rastreabilidade</p>
+            </div>
+            <img src="{% url 'core:lote-qrcode' lote.pk %}" alt="QR Code" style="width: 150px;">
+        </div>
+
+        <div class="card mb-4 shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Informações Básicas</h4>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Data Produção/Abate</dt>
+                    <dd class="col-sm-8">{{ lote.data_producao_abate|date:"d/m/Y" }}</dd>
+
+                    <dt class="col-sm-4">Granja de Origem</dt>
+                    <dd class="col-sm-8">{{ lote.granja_origem }}</dd>
+
+                    <dt class="col-sm-4">Empresa Produtora</dt>
+                    <dd class="col-sm-8">{{ lote.empresa_produtora }}</dd>
+
+                    <dt class="col-sm-4">Data de Cadastro</dt>
+                    <dd class="col-sm-8">{{ lote.data_cadastro|date:"d/m/Y H:i" }}</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="card mb-4 shadow">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">Qualidade da Carne</h4>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Órgão Inspeção</dt>
+                    <dd class="col-sm-8">{{ lote.orgao_inspecao|default:"-" }}</dd>
+
+                    <dt class="col-sm-4">Resultados Análises</dt>
+                    <dd class="col-sm-8">{{ lote.resultados_analises|default:"-"|linebreaks }}</dd>
+
+                    <dt class="col-sm-4">Prazo Validade</dt>
+                    <dd class="col-sm-8">{{ lote.prazo_validade|date:"d/m/Y" }}</dd>
+
+                    <dt class="col-sm-4">Condições Conservação</dt>
+                    <dd class="col-sm-8">{{ lote.condicoes_conservacao }}</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="card mb-4 shadow">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">Saúde Animal</h4>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Histórico Vacinação</dt>
+                    <dd class="col-sm-8">{{ lote.historico_vacinacao|default:"-"|linebreaks }}</dd>
+
+                    <dt class="col-sm-4">Status Sanitário</dt>
+                    <dd class="col-sm-8">{{ lote.status_sanitario_granja|default:"-" }}</dd>
+
+                    <dt class="col-sm-4">Biosseguridade</dt>
+                    <dd class="col-sm-8">{{ lote.medidas_biosseguridade|default:"-"|linebreaks }}</dd>
+
+                    <dt class="col-sm-4">Manejo Sanitário</dt>
+                    <dd class="col-sm-8">{{ lote.manejo_sanitario|default:"-"|linebreaks }}</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="card mb-4 shadow">
+            <div class="card-header bg-warning">
+                <h4 class="mb-0">Bem-Estar Animal</h4>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Densidade Alojamento</dt>
+                    <dd class="col-sm-8">{{ lote.densidade_alojamento|default:"-" }} aves/m²</dd>
+
+                    <dt class="col-sm-4">Temperatura Galpão</dt>
+                    <dd class="col-sm-8">{{ lote.temperatura_galpao|default:"-" }} °C</dd>
+
+                    <dt class="col-sm-4">Umidade Galpão</dt>
+                    <dd class="col-sm-8">{{ lote.umidade_galpao|default:"-" }}%</dd>
+
+                    <dt class="col-sm-4">Ventilação</dt>
+                    <dd class="col-sm-8">{{ lote.sistema_ventilacao|default:"-" }}</dd>
+
+                    <dt class="col-sm-4">Iluminação</dt>
+                    <dd class="col-sm-8">{{ lote.iluminacao|default:"-" }}</dd>
+
+                    <dt class="col-sm-4">Acesso Água/Alimento</dt>
+                    <dd class="col-sm-8">
+                        {% if lote.acesso_agua_alimento %}
+                            <span class="badge bg-success">Adequado</span>
+                        {% else %}
+                            <span class="badge bg-danger">Insuficiente</span>
+                        {% endif %}
+                    </dd>
+
+                    <dt class="col-sm-4">Estrutura Galpão</dt>
+                    <dd class="col-sm-8">{{ lote.estrutura_galpao|default:"-"|linebreaks }}</dd>
+
+                    <dt class="col-sm-4">Manejo Bem-Estar</dt>
+                    <dd class="col-sm-8">{{ lote.manejo_bem_estar|default:"-"|linebreaks }}</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="card mb-4 shadow">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">Informações Adicionais</h4>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Tipo de Ração</dt>
+                    <dd class="col-sm-8">{{ lote.tipo_racao|default:"-" }}</dd>
+
+                    <dt class="col-sm-4">Abatedouro</dt>
+                    <dd class="col-sm-8">{{ lote.abatedouro|default:"-" }}</dd>
+
+                    <dt class="col-sm-4">Certificações</dt>
+                    <dd class="col-sm-8">{{ lote.certificacoes|default:"-"|linebreaks }}</dd>
+
+                    <dt class="col-sm-4">Contato Dúvidas</dt>
+                    <dd class="col-sm-8">{{ lote.contato_duvidas|default:"-" }}</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="card mb-4 shadow">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">Galeria da Granja</h4>
+            </div>
+            <div class="card-body">
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <img src="{% static 'core/img/1.jpeg' %}" 
+                            class="img-fluid rounded" 
+                            alt="Vista geral da granja"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#imageModal">
+                        <p class="text-muted small mt-2 text-center">Vista geral das instalações</p>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="{% static 'core/img/2.jpeg' %}" 
+                            class="img-fluid rounded" 
+                            alt="Área de alimentação"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#imageModal">
+                        <p class="text-muted small mt-2 text-center">Sistema de alimentação</p>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="{% static 'core/img/3.jpeg' %}" 
+                            class="img-fluid rounded" 
+                            alt="Controle sanitário"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#imageModal">
+                        <p class="text-muted small mt-2 text-center">Processo de higienização</p>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <img src="{% static 'core/img/4.jpg' %}" 
+                            class="img-fluid rounded" 
+                            alt="Sistema de ventilação"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#imageModal">
+                        <p class="text-muted small mt-2 text-center">Sistema de ventilação</p>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="{% static 'core/img/1.jpeg' %}" 
+                            class="img-fluid rounded" 
+                            alt="Área de repouso"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#imageModal">
+                        <p class="text-muted small mt-2 text-center">Área de descanso das aves</p>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="{% static 'core/img/4.jpg' %}" 
+                            class="img-fluid rounded" 
+                            alt="Controle de qualidade"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#imageModal">
+                        <p class="text-muted small mt-2 text-center">Checklist diário</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
