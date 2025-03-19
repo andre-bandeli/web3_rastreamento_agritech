@@ -1,14 +1,10 @@
-# 🐔 Rastreabilidade Agrícola - Sistema de Gerenciamento de Lotes
+# Rastreabilidade Agrícola - Sistema de Gerenciamento de Lotes
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](https://www.python.org/)
 [![Django](https://img.shields.io/badge/Django-5.1-brightgreen)](https://www.djangoproject.com/)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
 Sistema completo para rastreamento de lotes de frango com blockchain e QR Codes. Desenvolvido para garantir transparência na cadeia produtiva agrícola.
-
-![alt text](api.png)
-
-![alt text](admin.png)
 
 ## ✨ Funcionalidades Principais
 
@@ -36,3 +32,5 @@ Sistema completo para rastreamento de lotes de frango com blockchain e QR Codes.
 | HTML5/CSS3          | Estrutura básica                    |
 | JavaScript          | Interatividade básica               |
 
+![alt text](admin.png)
+![alt text](api.png)
